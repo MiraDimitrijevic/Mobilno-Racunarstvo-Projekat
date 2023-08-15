@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BookModel } from './book.model';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map, switchMap, take, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AuthorModel } from './author.model';
 import { UserModel } from './user.model';
@@ -24,6 +24,7 @@ interface CommentData{
   providedIn: 'root'
 })
 export class BooksService {
+  private bookArray :BookModel[]= [];
   private books = new BehaviorSubject<BookModel[]>([]);
   private myBooks= new BehaviorSubject<BookModel[]>([]);
   private comments=new BehaviorSubject<CommentModel[]>([]);
@@ -31,30 +32,47 @@ export class BooksService {
   constructor(private http:HttpClient) { }
 
   getBook(id:string | null) 
-  {return this.books.find((book)=>book.id===id)!}
+  {this.books.subscribe((books) =>{
+    this.bookArray=books;
+  }
+    )
+    return this.bookArray.find((book)=>book.id===id)!}
 
   addBook(name:string, year:number, author:AuthorModel, userAdded:UserModel){
+    let generatedId:string;
    return this.http.post<{name:string}>('https://bookstorage-a4fc3-default-rtdb.europe-west1.firebasedatabase.app/books.json' , {
     name, year, author, userAdded
-   }).pipe(map((bookData)=>{
-    this.books.push({
-      id:bookData.name, name, year, author,userAdded
-    });
-    this.myBooks.push({
-      id:bookData.name, name, year, author,userAdded
-    });
+   }).pipe(switchMap((bookData)=>{
+    generatedId = bookData.name;
+return this.myBooks;
+
+ 
     return this.myBooks;
+   }), take(1), tap((books) =>{
+    this.books.next(books.concat({
+      id:generatedId, name, year, author,userAdded
+    }));
+    this.myBooks.next( books.concat({
+      id:generatedId, name, year, author,userAdded
+    }));
    }));
 
   }
 
   addComment(text:string, book:BookModel, user:UserModel ){
+    let generatedId:string;
     return this.http.post<{name:string}>('https://bookstorage-a4fc3-default-rtdb.europe-west1.firebasedatabase.app/comments.json', {
 text, book, user
-    }).pipe(map((commentData)=> {
-      this.comments.push({
-        id:commentData.name,text, book, user
-      });
+    }).pipe(switchMap((commentData)=> {
+      generatedId=commentData.name;
+return this.comments;
+
+    }), take(1), tap((comments) => {
+
+      this.comments.next(comments.concat({
+        id:generatedId,
+        text, book, user
+      }));
     }));
   }
 
