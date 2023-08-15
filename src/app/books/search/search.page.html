@@ -1,0 +1,13 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>search</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-searchbar show-clear-button="focus" value="" (ionInput)="handleInput($event)"></ion-searchbar>
+  <ion-list>
+      <app-book-element *ngFor="let result of results" >
+      </app-book-element>
+  </ion-list>
+</ion-content>

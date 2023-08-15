@@ -1,0 +1,49 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>register</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form #registerForm="ngForm" (ngSubmit)="register(registerForm)">
+  <ion-list>
+    <ion-item>
+    
+      <ion-input ngModel name="name" type="text" fill="solid" minlength="3" label="Name" color="black" required="true" 
+      labelPlacement="floating"  required #name="ngModel" errorText="Invalid name, should be minimum 3 characters long.">
+  
+      </ion-input>
+    </ion-item>
+    <ion-item>
+    
+      <ion-input ngModel name="surname" type="text" minlength="3"  fill="solid" label="Surname" color="black" required="true" 
+      labelPlacement="floating" required #surname="ngModel"  errorText="Invalid surname, should be minimum 3 characters long.">
+  
+      </ion-input>
+    </ion-item>
+    <ion-item>
+    
+      <ion-input ngModel name="email" type="email" fill="solid" label="Email" color="black" required="true" 
+      labelPlacement="floating" errorText="Invalid email" required email #email="ngModel" >
+  
+      </ion-input>
+    </ion-item>
+  
+    <ion-item>
+    
+      <ion-input ngModel name="password" type="password" label="Password" minlength="8"  color="black"
+       required="true" fill="solid" labelPlacement="floating" errorText="Invalid password, should be minimum 8 characters long." required #password="ngModel">
+  
+      </ion-input>
+    </ion-item>
+  
+  </ion-list>
+  
+  <ion-button type="submit"  shape="round" expand="block" size="small" [disabled]="registerForm.invalid">
+    Register
+  </ion-button>
+  <ion-button shape="round" expand="block" size="small" (click)="openLogInPage()" >
+    Log in
+  </ion-button>
+</form>
+  </ion-content>

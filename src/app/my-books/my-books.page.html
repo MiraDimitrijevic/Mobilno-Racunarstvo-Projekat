@@ -1,0 +1,24 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start"  >
+      <ion-menu-button color="warning"></ion-menu-button> 
+    </ion-buttons>
+    <ion-title>my-books</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-tabs>
+    <ion-tab-bar slot="buttom"color="secondary" >
+      <ion-tab-button tab="add" color-focused="primary">
+        <ion-icon name="create-outline" color="warning"></ion-icon>
+        <ion-label color="warning">Add book</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="list"  color-focused="primary">
+        <ion-icon name="book-outline" color="warning" ></ion-icon>
+        <ion-label color="warning">Added books</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-content>
+

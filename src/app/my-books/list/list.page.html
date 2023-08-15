@@ -1,0 +1,18 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>list</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <app-book-element *ngFor="let book of books" [book]="book" [routerLink]="book.id">
+
+    </app-book-element>
+  </ion-list>
+  <ion-buttons class="ion-justify-content-center" >
+    <ion-button color="primary" fill="solid" routerLink="/books">
+      All books
+    </ion-button>
+  </ion-buttons>
+  </ion-content>

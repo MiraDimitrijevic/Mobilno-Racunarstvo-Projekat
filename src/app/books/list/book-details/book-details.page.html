@@ -1,0 +1,75 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start" >
+      <ion-back-button defaultHref="/books/tabs/list"> </ion-back-button>
+        </ion-buttons>
+    <ion-title>book details</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+<ion-card>
+  <ion-card-title >
+<ion-text>
+  <p style="text-align:center; width: 100%; height: 10px; font-style: bold;">
+  {{book.name}}
+</p>
+<p style="text-align:center; width: 100%; font-size: smaller; height: 3px;">
+  {{book.author.name+" "+book.author.surname+ " ("+book.author.born+"-"+book.author.died+")"}}
+</p>
+</ion-text>
+</ion-card-title>
+<ion-card-content>
+<ion-label>
+  <p style=" color:black; text-align:right; width: 100%; height: 20px;  font-size: larger; font-style: bold;">
+   year of publication: {{book.year}}
+</p>
+</ion-label>
+
+<ion-label>
+  <p style=" color:black;text-align:left; width: 100%; height: 7px;  font-size: small; font-style: italic;  border-bottom: 2px; border-bottom-style: double;
+  padding-top: 7px; padding-bottom:30px ;">
+
+  {{"addded by "+book.userAdded.name+" "+book.userAdded.surname+" ("+book.userAdded.email+")"}}
+</p>
+
+</ion-label>
+<form #commentForm="ngForm" (ngSubmit)="commentBook(commentForm)">
+ 
+    
+      <ion-input ngModel name="comment" type="text" label="Your comment:" labelPlacement="floating"
+      placeholder="Enter comment" fill="solid" color="black" class= "com" required="true" 
+        required comment #comment="ngModel"  >
+  
+      </ion-input>
+   
+      <ion-button type="submit" shape="round" expand="block" size="small" >
+        <ion-icon name="chatbubble-outline" slot="start"></ion-icon>
+
+      Add comment
+      </ion-button>
+
+  </form>
+  <ion-label>
+    Comments:
+  </ion-label>
+  <ion-card >
+  <ion-list >
+    <ion-card *ngFor="let comment of comments" >
+      <ion-card-content>
+  <ion-label>
+    <p style=" color:black; text-align:left; width: 100%; height: 15px;  font-size: small; font-style: bold;">
+    {{"addded by "+comment.user.name+" "+comment.user.surname}}
+  </p>
+  </ion-label>
+  <ion-label>
+    <p style="text-align:center;  width: 100%; height: 20px; font-size: larger; font-style: bold; color:black;">
+    {{comment.text}}
+    </p>
+  </ion-label>
+  </ion-card-content>
+    </ion-card>
+  </ion-list>
+  </ion-card>
+</ion-card-content>
+</ion-card>
+</ion-content>

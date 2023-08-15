@@ -1,0 +1,22 @@
+  <ion-card>
+
+    <ion-card-title>
+  <ion-text>
+    <p style="text-align:center; width: 100%; height: 10px; font-style: bold;">
+    {{book.name}}  ({{book.year}})
+    </p>
+  </ion-text>
+</ion-card-title>
+<ion-card-content style="padding: 15px; height: 100px; ">
+  <ion-label>
+    <p style="text-align:center; width: 100%; font-size: larger; height: 10px; color:black; padding-bottom: 10px;">
+    {{book.author.name+" "+book.author.surname}}
+    </p>
+  </ion-label>
+  <p style="text-align:right; width: 100%; font-size: larger; height: 20px; color:black; padding-top:15px">
+    <ion-icon name="create-outline" slot="end" color="black" size="large" ></ion-icon>
+
+  <ion-icon name="trash-outline" slot="end" color="black" size="large" (click)="openDeletePopUp()"></ion-icon>
+</p>
+</ion-card-content>
+</ion-card>

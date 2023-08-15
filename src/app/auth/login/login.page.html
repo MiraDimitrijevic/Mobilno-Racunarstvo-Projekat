@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form #logInForm="ngForm" (ngSubmit)="logIn(logInForm)">
+<ion-list>
+  <ion-item>
+  
+    <ion-input ngModel name="email" type="email" fill="solid" label="Email" color="black" required="true"
+     labelPlacement="floating" errorText="Invalid email" required email #email="ngModel">
+
+    </ion-input>
+  </ion-item>
+
+  <ion-item>
+  
+    <ion-input ngModel name="password" type="password" minlength="8" label="Password" color="black" required="true"
+     fill="solid" labelPlacement="floating" errorText="Invalid password, should be minimum 8 characters long." required #password="ngModel">
+
+    </ion-input>
+  </ion-item>
+
+</ion-list>
+
+<ion-button type="submit" shape="round" expand="block" size="small" [disabled]="logInForm.invalid">
+  <ion-icon name="log-in-outline"></ion-icon>
+  Log in
+</ion-button>
+<ion-button shape="round" expand="block" size="small" (click)="openRegistrationPage()" >
+  Register
+</ion-button>
+</form>
+</ion-content>

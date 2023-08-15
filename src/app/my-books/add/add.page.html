@@ -1,0 +1,102 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>add</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form #addBookForm="ngForm" (ngSubmit)="addBook(addBookForm)">
+    <ion-list >
+      <ion-item>
+      
+        <ion-input ngModel name="bookName" type="text" fill="solid" label="Book name:" color="black" required="true"
+         labelPlacement="floating" errorText="Invalid book name" required #bookName="ngModel">
+    
+        </ion-input>
+      </ion-item>
+    
+      <ion-item>
+      
+        <ion-input ngModel name="year" type="number" minlength="3" label="Year of release:" color="black" required="true"
+         fill="solid" labelPlacement="floating" errorText="Invalid year, should be minimum 3 characters long." required #year="ngModel">
+    
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="add-outline" slot="end" id="add-new-author" (click)="openAuthorForm()"></ion-icon>
+        <ion-popover trigger="add-new-author" triggerAction="hover" side="top" alignment="center">
+          <ng-template>
+            <ion-content class="ion-padding">Add new author</ion-content>
+          </ng-template>
+        </ion-popover>
+        <ion-select
+        ngModel name="author" required #author="ngModel"
+          label="Author"
+          [compareWith]="compareWith"
+          placeholder="Select author"
+          (ionChange)="handleChange($event)"
+        >
+          <ion-select-option *ngFor="let author of authors" [value]="author">{{ author.name }} {{author.surname}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    
+    </ion-list>
+    
+    <ion-button type="submit" shape="round" expand="block" size="small" [disabled]="addBookForm.invalid">
+      Add book
+    </ion-button>
+    </form>
+
+    <form *ngIf="isFormOpen" id="add-button"  #addAuthorForm="ngForm" (ngSubmit)="addAuthor(addAuthorForm)" >
+      <ion-list>
+        <ion-item>
+        
+          <ion-input ngModel name="authorName" type="text" fill="solid" label="Author name:" color="black" required="true"
+           labelPlacement="floating" errorText="Invalid author name" required #authorName="ngModel">
+      
+          </ion-input>
+        </ion-item>
+        <ion-item>
+        
+          <ion-input ngModel name="authorSurname" type="text" fill="solid" label="Author surname:" color="black" required="true"
+           labelPlacement="floating" errorText="Invalid author surname" required #authorSurname="ngModel">
+      
+          </ion-input>
+        </ion-item>
+      
+        <ion-item>
+        
+          <ion-input ngModel name="born" type="number" minlength="3" label="Born" color="black" required="true"
+           fill="solid" labelPlacement="floating" errorText="Invalid year, should be minimum 3 characters long." required #born="ngModel">
+      
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-checkbox ngModel [(ngModel)]="checkbox" name="dead" justify="start" #dead="ngModel">Author is dead</ion-checkbox>
+        </ion-item>
+        <ion-item>
+        
+          <ion-input [disabled]="!checkbox" ngModel name="died" type="number" minlength="3" label="Died" color="black" 
+           fill="solid" labelPlacement="floating" errorText="Invalid year, should be minimum 3 characters long."  #died="ngModel">
+      
+          </ion-input>
+        </ion-item>
+      
+      
+      </ion-list>
+      
+      <ion-button type="submit" id="add-button" shape="round" expand="block" size="small" [disabled]="addAuthorForm.invalid" (click)="setOpen(true)">
+        Add author
+      </ion-button>
+   
+      </form>
+      <ion-alert
+      [isOpen]="isAlertOpen"
+      trigger="add-button"
+      header="Information"
+      subHeader="Important message"
+      message="Book added successfully!"
+      [buttons]="alertButtons"
+    ></ion-alert>
+     
+</ion-content>

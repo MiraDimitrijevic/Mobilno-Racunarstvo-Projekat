@@ -1,0 +1,24 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start" >
+      <ion-back-button defaultHref="/my-books"> </ion-back-button>
+        </ion-buttons>
+    <ion-title>books</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-tabs>
+    <ion-tab-bar slot="buttom" color="secondary">
+      <ion-tab-button tab="list"  color-focused="primary">
+        <ion-icon name="book-outline" color="warning" ></ion-icon>
+        <ion-label color="warning">All books</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="search">
+        <ion-icon name="search-outline" color="warning"></ion-icon>
+                <ion-label color="warning">Search books</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-content>
+
