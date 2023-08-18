@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { BookModel } from './book.model';
 import { BehaviorSubject, Observable, map, switchMap, take, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { AuthorModel } from './author.model';
 import { UserModel } from './user.model';
 import { CommentModel } from './comment.model';
+import { AuthorModel } from './author.model';
 
 
 interface BookData{
@@ -20,6 +20,14 @@ interface CommentData{
   book:BookModel;
   user:UserModel;
   };
+
+  interface AuthorData{
+    name:string;
+    surname:string;
+    born:number;
+    dead:boolean;
+    died:number;
+  }
 @Injectable({
   providedIn: 'root'
 })
@@ -28,6 +36,8 @@ export class BooksService {
   private books = new BehaviorSubject<BookModel[]>([]);
   private myBooks= new BehaviorSubject<BookModel[]>([]);
   private comments=new BehaviorSubject<CommentModel[]>([]);
+  private authors= new BehaviorSubject<AuthorModel[]>([]);
+
   user:UserModel={id:"1", name:"Marija", surname:"Markovic", email:"Marija123", password:"12345678"};
   constructor(private http:HttpClient) { }
 
@@ -38,6 +48,38 @@ export class BooksService {
     )
     return this.bookArray.find((book)=>book.id===id)!}
 
+    editBook(id:string | null, name:string, year:number, author:AuthorModel, userAdded:UserModel){
+      var bookIndex:number;
+return this.http.put<{name:string}>('https://bookstorage-a4fc3-default-rtdb.europe-west1.firebasedatabase.app/books/'+id+'.json' , {
+  id,name, year, author, userAdded
+}).pipe(switchMap((bookData) =>{
+  return this.myBooks;
+}) , take(1) , tap((books) =>{
+  bookIndex= books.findIndex((book)=> {
+    book.id===id;
+  });
+ var updatedBooks= [...books];
+ const book=updatedBooks[bookIndex];
+ updatedBooks[bookIndex]= {id:id, name:name, year:year, author:author, userAdded:userAdded};
+ this.myBooks.next(updatedBooks);
+}));
+    }
+
+    deleteBook(id:string | null){
+      var bookIndex:number;
+return this.http.delete<{name:string}>('https://bookstorage-a4fc3-default-rtdb.europe-west1.firebasedatabase.app/books/'+id+'.json' ).
+pipe(switchMap((bookData) =>{
+  return this.myBooks;
+}), take(1), tap((books) =>{
+  bookIndex= books.findIndex((book)=> {
+    book.id===id;
+  });
+ var updatedBooks= [...books];
+updatedBooks.splice(bookIndex, 1);
+ this.myBooks.next(updatedBooks);
+}));
+    }
+
   addBook(name:string, year:number, author:AuthorModel, userAdded:UserModel){
     let generatedId:string;
    return this.http.post<{name:string}>('https://bookstorage-a4fc3-default-rtdb.europe-west1.firebasedatabase.app/books.json' , {
@@ -47,7 +89,6 @@ export class BooksService {
 return this.myBooks;
 
  
-    return this.myBooks;
    }), take(1), tap((books) =>{
     this.books.next(books.concat({
       id:generatedId, name, year, author,userAdded
@@ -57,6 +98,19 @@ return this.myBooks;
     }));
    }));
 
+  }
+
+  addAuthor(name:string, surname:string, born: number, dead: boolean, died:number){
+    let generatedId:string;
+    return this.http.post<{name:string}> ('https://bookstorage-a4fc3-default-rtdb.europe-west1.firebasedatabase.app/authors.json' , {
+      name, surname, born, dead, died}).pipe(switchMap ((authorData) =>{
+        generatedId= authorData.name;
+        return this.authors;
+      }), take(1), tap((authors) =>{
+        this.authors.next(authors.concat({
+          id:generatedId, name, surname, born, dead, died
+        }));
+      }));
   }
 
   addComment(text:string, book:BookModel, user:UserModel ){
@@ -77,7 +131,8 @@ return this.comments;
   }
 
   getBooks(){
-    return this.http.get<{[key:string]:BookData}>('https://bookstorage-a4fc3-default-rtdb.europe-west1.firebasedatabase.app/books.json').pipe(map((bookData) =>{
+    return this.http.get<{[key:string]:BookData}>('https://bookstorage-a4fc3-default-rtdb.europe-west1.firebasedatabase.app/books.json')
+    .pipe(map((bookData) =>{
       const books:BookModel[]=[];
       for(const key in bookData){
         if(bookData.hasOwnProperty(key)){
@@ -92,6 +147,28 @@ return this.comments;
       }
       this.books.next(books);
       return books;
+    }));
+  }
+
+  getAuthors(){
+    return this.http.get<{[key:string]:AuthorData}>('https://bookstorage-a4fc3-default-rtdb.europe-west1.firebasedatabase.app/authors.json')
+    .pipe(map((authorData) =>{
+      const authors:AuthorModel[]=[];
+      for(const key in authorData){
+if(authorData.hasOwnProperty(key)){
+  authors.push({
+    id:key,
+    name:authorData[key].name,
+    surname:authorData[key].surname,
+    born:authorData[key].born,
+    dead:authorData[key].dead,
+    died:authorData[key].died
+
+  })
+}
+      }
+      this.authors.next(authors);
+      return authors;
     }));
   }
 
@@ -120,7 +197,7 @@ return this.comments;
     .pipe(map((commentData)=>{
 const comments:CommentModel[]=[];
 for(const key in commentData){
-  if(commentData.hasOwnProperty(key) && book.name==commentData[key].book.name){
+  if(commentData.hasOwnProperty(key) && book.id==commentData[key].book.id){
     comments.push({
       id:key,
       text:commentData[key].text,
@@ -148,6 +225,10 @@ return this.user;
 
   get comment(){
     return this.comments.asObservable();
+  }
+
+  get author(){
+    return this.authors.asObservable();
   }
 }
 

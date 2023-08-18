@@ -33,6 +33,7 @@
           </ng-template>
         </ion-popover>
         <ion-select
+        ngModel name="author" required #author="ngModel"
           label="Author"
           [compareWith]="compareWith"
           placeholder="Select author"
@@ -44,11 +45,18 @@
     
     </ion-list>
     
-    <ion-button type="submit" shape="round" expand="block" size="small" [disabled]="editBookForm.invalid">
+    <ion-button type="submit" shape="round" id="edit-book-button" expand="block" size="small" [disabled]="editBookForm.invalid">
+      <ion-icon name="create-outline" slot="start"></ion-icon>
       Edit book
     </ion-button>
     </form>
-
+    <ion-alert
+    trigger="edit-book-button"
+    header="Information"
+    subHeader="Important message"
+    message="Book edited successfully!"
+    [buttons]="alertButtons"
+  ></ion-alert>
     <form *ngIf="isFormOpen"  #addAuthorForm="ngForm" (ngSubmit)="addAuthor(addAuthorForm)" >
       <ion-list>
         <ion-item>
@@ -87,8 +95,28 @@
       
       </ion-list>
       
-      <ion-button type="submit" shape="round" expand="block" size="small" [disabled]="addAuthorForm.invalid">
+      <ion-button type="submit" id="add-author-button" shape="round" expand="block" size="small" [disabled]="addAuthorForm.invalid"
+      (click)="setOpen(true)">
         Add author
       </ion-button>
       </form>
+      <ion-alert
+      [isOpen]="isAlertOpen"
+      trigger="add-author-button"
+      header="Information"
+      subHeader="Important message"
+      message="Author added successfully!"
+      [buttons]="alertButtons"
+    ></ion-alert>
+    <ion-button id="delete-book-button" type="submit" shape="round" id="delete-book-button" expand="block" size="small" (click)="deleteBook()">
+      <ion-icon name="trash-outline" slot="start"></ion-icon>
+      Delete book
+    </ion-button>
+    <ion-alert
+    trigger="delete-book-button"
+    header="Information"
+    subHeader="Important message"
+    message="Book deleted successfully!"
+    [buttons]="alertButtons"
+  ></ion-alert>
 </ion-content>

@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { BookModel } from 'src/app/book.model';
 import { BooksService } from 'src/app/books.service';
 
@@ -9,17 +10,20 @@ import { BooksService } from 'src/app/books.service';
 })
 export class ListPage implements OnInit, OnDestroy {
 books: BookModel[]=[];
+private bookSub:Subscription=Subscription.EMPTY;
   constructor( private bookService: BooksService) {
    }
 
   ngOnInit() {
-    this.bookService.book.subscribe((books) =>{
+    this.bookSub=this.bookService.book.subscribe((books) =>{
       this.books=books;
     })
   }
 
   
   ngOnDestroy() {
+    if(this.bookSub)
+    this.bookSub.unsubscribe;
   }
 
   ionViewWillEnter(){

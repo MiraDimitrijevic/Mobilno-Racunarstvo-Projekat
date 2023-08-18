@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { BookModel } from 'src/app/book.model';
 import { BooksService } from 'src/app/books.service';
 
@@ -9,22 +10,25 @@ import { BooksService } from 'src/app/books.service';
 })
 export class SearchPage implements OnInit, OnDestroy {
   books: BookModel[] =[];
+  private bookSub:Subscription= Subscription.EMPTY;
   constructor( private bookService: BooksService) {
    }
 
   ngOnInit() {
-    this.bookService.book.subscribe((books) =>{
+    this.bookSub =this.bookService.book.subscribe((books) =>{
       this.books=books;
     })
   }
 
   ngOnDestroy() {
+    if(this.bookSub){
+      this.bookSub.unsubscribe;
+    }
   }
 
   ionViewWillEnter(){
     this.bookService.getBooks().subscribe((bookData) => {
    
-   //   this.books=bookData;
     })
 
   }
@@ -44,7 +48,7 @@ export class SearchPage implements OnInit, OnDestroy {
 
   handleInput(event:any) {
     const query = event.target.value.toLowerCase();
-    this.results = this.books.filter((b) => b.name.toLowerCase().indexOf(query) > -1);
+    this.results = this.books.filter((book) => book.name.toLowerCase().indexOf(query) > -1);
   }
 
 }

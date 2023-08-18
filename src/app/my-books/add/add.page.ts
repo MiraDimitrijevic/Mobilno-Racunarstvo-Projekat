@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { AuthorModel } from 'src/app/author.model';
 import { BookModule } from 'src/app/book-module';
 import { BooksService } from 'src/app/books.service';
 
@@ -8,7 +10,7 @@ import { BooksService } from 'src/app/books.service';
   templateUrl: './add.page.html',
   styleUrls: ['./add.page.scss'],
 })
-export class AddPage implements OnInit {
+export class AddPage implements OnInit, OnDestroy {
 //alert ne radi, skapiraj sto!!!!
   checkbox:boolean=true;
   currentAuthor= undefined;
@@ -16,36 +18,28 @@ export class AddPage implements OnInit {
  public alertButtons = ['OK'];
  isAlertOpen=false;
 
-  authors = [
-    {
-      id: 1,
-      name: 'Desanka',
-      surname: 'Maksimovic',
-      born:1900,
-      dead:true,
-      died:1990
-    },
-    {
-      id: 2,
-      name: 'Ivo',
-      surname: 'Andric',
-      born:1900,
-      dead:true,
-      died:1990
-    },
-    {
-      id: 3,
-      name: 'Mesa',
-      surname: 'Selimovic',
-      born:1900,
-      dead:true,
-      died:1990
-    },
-  ];
+ authors:AuthorModel[]=[];
+ authorSub:Subscription=Subscription.EMPTY;
   constructor(private bookService:BooksService) { }
 
   ngOnInit() {
+    this.authorSub=this.bookService.author.subscribe((authors)=>{
+      this.authors=authors;
+    }
+    )
   }
+
+  ngOnDestroy(){
+    if(this.authorSub){
+      this.authorSub.unsubscribe;
+    }
+  }
+
+  ionViewWillEnter(){
+    this.bookService.getAuthors().subscribe((authorData) => {
+
+    })}
+
 
   compareWith(o1:any, o2:any) {
     return o1 && o2 ? o1.id === o2.id : o1 === o2;
@@ -64,7 +58,10 @@ export class AddPage implements OnInit {
   }
 
   addAuthor(form: NgForm){
-
+this.bookService.addAuthor(form.value.authorName, form.value.authorSurname, form.value.born,
+  form.value.dead, form.value.died).subscribe((res)=>{
+    
+  })
   }
 
   openAuthorForm(){

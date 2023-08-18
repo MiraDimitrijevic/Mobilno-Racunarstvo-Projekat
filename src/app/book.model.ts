@@ -2,7 +2,7 @@ import { AuthorModel } from "./author.model";
 import { UserModel } from "./user.model";
 
 export interface BookModel {
-    id:string;
+    id:string | null;
     name:string;
     year:number;
     author:AuthorModel;

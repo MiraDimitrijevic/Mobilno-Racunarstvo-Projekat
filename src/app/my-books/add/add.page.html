@@ -42,11 +42,17 @@
     
     </ion-list>
     
-    <ion-button type="submit" shape="round" expand="block" size="small" [disabled]="addBookForm.invalid">
+    <ion-button type="submit" id="add-book-button" shape="round" expand="block" size="small" [disabled]="addBookForm.invalid">
       Add book
     </ion-button>
     </form>
-
+    <ion-alert
+    trigger="add-book-button"
+    header="Information"
+    subHeader="Important message"
+    message="Book added successfully!"
+    [buttons]="alertButtons"
+  ></ion-alert>
     <form *ngIf="isFormOpen" id="add-button"  #addAuthorForm="ngForm" (ngSubmit)="addAuthor(addAuthorForm)" >
       <ion-list>
         <ion-item>
@@ -85,17 +91,17 @@
       
       </ion-list>
       
-      <ion-button type="submit" id="add-button" shape="round" expand="block" size="small" [disabled]="addAuthorForm.invalid" (click)="setOpen(true)">
+      <ion-button type="submit" id="add-author-button" shape="round" expand="block" size="small" [disabled]="addAuthorForm.invalid" (click)="setOpen(true)">
         Add author
       </ion-button>
    
       </form>
       <ion-alert
       [isOpen]="isAlertOpen"
-      trigger="add-button"
+      trigger="add-author-button"
       header="Information"
       subHeader="Important message"
-      message="Book added successfully!"
+      message="Author added successfully!"
       [buttons]="alertButtons"
     ></ion-alert>
      

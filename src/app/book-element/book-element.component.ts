@@ -19,9 +19,7 @@ userAdded:{id:"1", name:"Marija", surname:"Markovic", email:"Marija123", passwor
 
   }
 
-  openDeletePopUp(){
 
-  }
 
 }
 
