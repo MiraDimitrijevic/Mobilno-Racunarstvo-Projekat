@@ -50,7 +50,7 @@ export class AddPage implements OnInit, OnDestroy {
   }
 
   addBook(form: NgForm){
-    this.bookService.addBook(form.value.bookName, form.value.year, form.value.author, this.bookService.getUser()).subscribe((res)=>{
+    this.bookService.addBook(form.value.bookName, form.value.year, form.value.author).subscribe((res)=>{
       //res je id kreirane knjige
       //potrebno je da se nekako prosiri niz knjiga i na ostalim stranama
       console.log(res);

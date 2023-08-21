@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { BookModel } from 'src/app/book.model';
 import { BooksService } from 'src/app/books.service';
 import { CommentModel } from 'src/app/comment.model';
+import { UserModel } from 'src/app/user.model';
 
 @Component({
   selector: 'app-book-details',
@@ -12,8 +13,8 @@ import { CommentModel } from 'src/app/comment.model';
   styleUrls: ['./book-details.page.scss'],
 })
 export class BookDetailsPage implements OnInit, OnDestroy {
-  book:BookModel={id:"1",name:"Rat i Mir", year:1950,author: {id:"1", name:"Vladimir", surname:"Nikolajevic Tolstoj", born:1867, dead:true, died:1955},
-  userAdded:{id:"1", name:"Marija", surname:"Markovic", email:"Marija123", password:"12345678"} };
+  book:BookModel= new BookModel(null, "", 0,  {id:"1", name:"Vladimir", surname:"Nikolajevic Tolstoj", born:1867, dead:true, died:1955}, 
+  new UserModel("", "","", "", new Date()));
   comments:CommentModel[]=[];
   private commentSub:Subscription=Subscription.EMPTY;
   constructor(private route:ActivatedRoute, private bookService:BooksService) {
@@ -46,10 +47,10 @@ export class BookDetailsPage implements OnInit, OnDestroy {
 
 
   commentBook(commentForm:NgForm){
-    this.bookService.addComment(commentForm.value.comment, this.book, this.bookService.getUser())
+  console.log("Usao u metodu comment i pozvao addComent");
+    this.bookService.addComment(commentForm.value.comment, this.book)
     .subscribe((res)=>{
       console.log(res);
-      this.ionViewWillEnter();
     })
   }
 }

@@ -1,12 +1,10 @@
 import { AuthorModel } from "./author.model";
 import { UserModel } from "./user.model";
 
-export interface BookModel {
-    id:string | null;
-    name:string;
-    year:number;
-    author:AuthorModel;
-    userAdded: UserModel;
+export class BookModel {
+ 
+ constructor(public id:string | null, public name:string, public year:number, public author:AuthorModel, public userAdded:UserModel | null){
 
+ }
    
 }

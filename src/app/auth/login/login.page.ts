@@ -16,8 +16,12 @@ export class LoginPage implements OnInit {
   }
 
   logIn(form:NgForm){
-    this.authService.logIn();
-    this.router.navigateByUrl('my-books/tabs/list');
+    this.authService.logIn(form.value).subscribe( resData =>{
+      console.log("Registracija uspela!");
+      console.log(resData);
+      this.router.navigateByUrl('my-books/tabs/list');
+
+    });
   }
 
   openRegistrationPage(){

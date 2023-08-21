@@ -12,7 +12,6 @@ import { UserModel } from 'src/app/user.model';
 export class ListPage implements OnInit, OnDestroy {
   books: BookModel[]= [];
 
-  user:UserModel={id:"1", name:"Marija", surname:"Markovic", email:"Marija123", password:"12345678"};
 private bookSub:Subscription= Subscription.EMPTY;
   constructor(private bookService:BooksService) {
    }

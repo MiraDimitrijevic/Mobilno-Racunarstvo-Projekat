@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { AuthorModel } from 'src/app/author.model';
 import { BookModel } from 'src/app/book.model';
 import { BooksService } from 'src/app/books.service';
+import { UserModel } from 'src/app/user.model';
 
 @Component({
   selector: 'app-edit',
@@ -14,8 +15,9 @@ import { BooksService } from 'src/app/books.service';
 })
 export class EditPage implements OnInit, OnDestroy {
   bookId:string | null="";
-  book:BookModel={id:"1",name:"Rat i Mir", year:1950,author: {id:"1", name:"Vladimir", surname:"Nikolajevic Tolstoj", born:1867, dead:true, died:1955},
-  userAdded:{id:"1", name:"Marija", surname:"Markovic", email:"Marija123", password:"12345678"} };  checkbox:boolean=true;
+  book:BookModel= new BookModel(null, "", 0,  {id:"1", name:"Vladimir", surname:"Nikolajevic Tolstoj", born:1867, dead:true, died:1955}, 
+  new UserModel("", "","", "", new Date()));
+  checkbox:boolean=true;
   currentAuthor= undefined;
  private _formOpen=false;
   authors:AuthorModel[]=[];
@@ -57,7 +59,7 @@ export class EditPage implements OnInit, OnDestroy {
   }
 
   editBook(form: NgForm){
-    this.bookService.editBook(this.bookId,form.value.bookName, form.value.year, form.value.author, this.bookService.getUser()).subscribe((res)=>{
+    this.bookService.editBook(this.bookId,form.value.bookName, form.value.year, form.value.author).subscribe((res)=>{
       //res je id kreirane knjige
       //potrebno je da se nekako prosiri niz knjiga i na ostalim stranama
       console.log(res);

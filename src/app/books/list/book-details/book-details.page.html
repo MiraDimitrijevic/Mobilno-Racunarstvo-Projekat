@@ -29,7 +29,7 @@
   <p style=" color:black;text-align:left; width: 100%; height: 7px;  font-size: small; font-style: italic;  border-bottom: 2px; border-bottom-style: double;
   padding-top: 7px; padding-bottom:30px ;">
 
-  {{"addded by "+book.userAdded.name+" "+book.userAdded.surname+" ("+book.userAdded.email+")"}}
+  {{"addded by "+book.userAdded?.email}}
 </p>
 
 </ion-label>
@@ -58,7 +58,7 @@
       <ion-card-content>
   <ion-label>
     <p style=" color:black; text-align:left; width: 100%; height: 15px;  font-size: small; font-style: bold;">
-    {{"addded by "+comment.user.name+" "+comment.user.surname}}
+    {{"addded by "+comment?.user?.email}}
   </p>
   </ion-label>
   <ion-label>
